@@ -1,0 +1,164 @@
+.\" Process this file with
+.\" groff -man -Tascii foo.1
+.\"
+.TH YAZI 1
+.SH NAME
+yazi \- blazingly fast terminal manager
+.SH SYNOPSIS
+.B yazi [OPTIONS] [ENTRY]
+.SH DESCRIPTION
+.B
+Yazi (means "duck") is a terminal file manager written in Rust, based on non-blocking 
+async I/O. It aims to provide an efficient, user-friendly, and customizable file management experience.
+.SH OPTIONS
+.IP "--cwd-file <CWD_FILE>"
+Write the cwd on exit to this file
+.IP "--chooser-file <CHOOSER_FILE>"
+Write the selected files to this file on open fired
+.IP "--clear-cache"
+Clear the cache directory
+.IP "--local-events <LOCAL_EVENTS>"
+Report the specified local events to stdout
+.IP "--remote-events <REMOTE_EVENTS>"
+Report the specified remote events to stdout
+.IP "--debug"
+Print debug information
+.IP "-V, --version"
+Print version
+.IP "-h, --help"
+Print help
+.SH PRESET KEYBINDINGS
+.I Navigation
+.PP
+    k/<up>             Move the cursor up
+    j/<down>           Move the cursor down
+    l/<right>          Enter hovered directory
+    h/<left>           Leave the current directory and into its parent
+
+    K                  Move the cursor up 5 lines
+    L                  Move the cursor down 5 lines
+    gg                 Move cursor to the top
+    G                  Move cursor to the bottom
+.PP
+.I Selection
+.PP
+    <space>            Toggle selection of hovered file/directory
+    v                  Enter visual mode (selection mode)
+    V                  Enter visual mode (unset mode)
+    <ctrl> + a         Select all files
+    <ctrl> + r         Invert selection of all files
+    <esc>              Cancel selection
+.PP
+.I "File/directory operations"
+.PP
+    o/<enter>          Open selected files
+    O/<ctrl> + <enter> Open selected files interactively
+                        (NOTE: some terminals don't support 
+                        the <ctrl>+<enter> combination)
+    y                  Yank the selected files (copy)
+    x                  Yank the selected files (cut)
+    p                  Paste the yanked files
+    P                  Paste the yanked files 
+                        (overwrite if destination exists)
+    Y/X                Cancel the yank state (unyank)
+    -                  Create a symbolic link to the yanked 
+                        files (absolute path)
+    _                  Create a symbolic link to the yanked 
+                        files (relative path)
+    d                  Move the files to the trash
+    D                  Permanently delete files
+    a                  Create a file or directory 
+                        (ends with "/" for directories)
+    r                  Rename a file or directory
+    ;                  Run a shell command
+    :                  Run a shell command (block the UI 
+                        until the command finishes)
+    .                  Toggle the visibility of hidden files
+    <ctrl> + s         Cancel the ongoing search
+    z                  Jump to a directory using zoxide
+    Z                  Jump to a directory, or reveal 
+                        a file using fzf
+.PP
+.I "Tabs"
+.PP
+    t                  Create a new tab using current path
+    1-9                Switch to specified tab number
+    [                  Switch to previous tab
+    ]                  Switch to next tab
+    {                  Swap current tab with previous tab
+    }                  Swap current tab with next tab
+.PP
+.I "Linemode"
+.PP
+    ms                 Set linemode to size
+    mp                 Set linemode to permissions
+    mm                 Set linemode to modified time
+    mn                 Set linemode to none
+.PP
+.I "Preview"
+.PP
+    <alt> + k          Seek up 5 units in preview
+    or <alt> + <pageup>
+    <alt> + j          Seek down 5 units in preview
+    or <alt> + <pagedown>
+.PP
+.I "Copying paths"
+.PP
+    cc                 Copy absolute path
+    cd                 Copy path of the parent directory
+    cf                 Copy the name of the file
+    cn                 Copy the name of the file 
+                        without the extension
+.PP
+.I "Filtering\ files/directories"
+.PP
+    f                  Filter the files/directories in CWD
+.PP
+.I "Finding\ files/directories"
+.PP
+    /                  Forward find file/directory in CWD
+    ?                  Backward find file/directory in CWD
+    n                  Jump to next occurrence
+    N                  Jump to previous occurrence
+.PP
+.I "Searching\ files/directories"
+.PP
+    /                  Forward find file/directory in CWD
+    ?                  Backward find file/directory in CWD
+    n                  Jump to next occurrence
+    N                  Jump to previous occurrence
+
+    s                  Search files by name using fd, see fd(1)
+    S                  Search files by name using ripgrep, see rg(1)
+.PP
+.I "Sorting"
+.PP
+    ,m                 Sort by modified time
+    ,M                 Sort by modified time (reverse)
+
+    ,c                 Sort by creation time
+    ,C                 Sort by creation time (reverse)
+
+    ,e                 Sort by file extension
+    ,E                 Sort by file extension (reverse)
+
+    ,a                 Sort alphabetically
+    ,A                 Sort alphabetically (reverse)
+
+    ,n                 Sort naturally
+    ,N                 Sort naturally (reverse)
+
+    ,s                 Sort by size
+    ,S                 Sort by size (reverse)
+
+    ?                  Backward find file/directory in CWD
+    n                  Jump to next occurrence
+    N                  Jump to previous occurrence
+
+    s                  Search files by name using fd, see fd(1)
+    S                  Search files by name using ripgrep, see rg(1)
+.PP
+.SH "SEE ALSO"
+.BR yazi-preview (2),
+.BR yazi-config (5),
+.BR yazi-plugins (7)
