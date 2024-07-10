@@ -707,6 +707,395 @@ L L.
 .TE
 .PP
 .RE
+
+.SH "COLOR SCHEME CONFIGURATION (theme.toml)"
+If you're looking for ready-made themes and don't want to create one yourself, check out the yazi-rs/flavors (
+.I "https://github.com/yazi-rs/flavors"
+) repository.
+
+.SS Types
+
+Color
+
+A color. It can be in Hex format with RGB values, such as '#484D66'. Or can be one of the following 17 values:
+.PP
+.IP \(bu 2
+reset
+.IP \(bu 2
+black
+.IP \(bu 2
+white
+.IP \(bu 2
+red
+.IP \(bu 2
+lightred
+.IP \(bu 2
+green
+.IP \(bu 2
+lightgreen
+.IP \(bu 2
+yellow
+.IP \(bu 2
+lightyellow
+.IP \(bu 2
+blue
+.IP \(bu 2
+lightblue
+.IP \(bu 2
+magenta
+.IP \(bu 2
+lightmagenta
+.IP \(bu 2
+cyan
+.IP \(bu 2
+lightcyan
+.IP \(bu 2
+gray
+.IP \(bu 2
+darkgray
+.PP
+
+Style
+
+Appears in a format similar to '{ fg = "#e4e4e4", bg = "black", ... }', and supports the following properties:
+
+.PP
+.IP \(bu 2
+fg (Color): Foreground color
+.IP \(bu 2
+bg (Color): Background color
+.IP \(bu 2
+bold (Boolean): Bold
+.IP \(bu 2
+dim (Boolean): Dim (not supported by all terminals)
+.IP \(bu 2
+italic (Boolean): Italic
+.IP \(bu 2
+underline (Boolean): Underline
+.IP \(bu 2
+blink (Boolean): Blink
+.IP \(bu 2
+blink_rapid (Boolean): Rapid blink
+.IP \(bu 2
+reversed (Boolean): Reversed foreground and background colors
+.IP \(bu 2
+hidden (Boolean): Hidden
+.IP \(bu 2
+crossed (Boolean): Crossed out
+.PP
+
+.SS [flavor]
+
+.IP \(bu 2
+use (String): Flavor name, e.g. "Dracula". See flavor documentation for more details. (
+.I "https://yazi-rs.github.io/docs/flavors/overview/"
+)
+
+.SS [manager]
+
+.PP
+.IP \(bu 2
+cwd (Style): CWD text style.
+.PP
+
+Hovered:
+
+.PP
+.IP \(bu 2
+hovered (Style): Hovered file style.
+.IP \(bu 2
+preview_hovered (Style): Hovered file style, in the preview pane.
+.PP
+
+Find: The find feature
+
+.PP
+.IP \(bu 2
+find_keyword (Style): Style of the highlighted portion in the filename.
+.IP \(bu 2
+find_position (Style): Style of current file location in all found files to the right of the filename.
+.PP
+
+Marker: Color block on the left side separator line in the filename.
+
+.PP
+.IP \(bu 2
+marker_selected (Style): Selected file marker style.
+.IP \(bu 2
+marker_copied (Style): Copied file marker style.
+.IP \(bu 2
+marker_cut (Style): Cut file marker style.
+.PP
+
+Tab: Tab bar
+
+.PP
+.IP \(bu 2
+tab_active (Style): Active tab style.
+.IP \(bu 2
+tab_inactive (Style): Inactive tab style.
+.IP \(bu 2
+tab_width (Number): Tab maximum width. When set to a value greater than 2, the remaining space will be filled with the tab name, which is current directory name.
+.PP
+
+Border:
+
+.IP \(bu 2
+border_symbol (String): Border symbol. e.g. "│".
+.IP \(bu 2
+border_style (Style): Border style.
+
+Highlighting: The built-in syntax highlighting feature
+
+.IP \(bu 2
+syntect_theme (String): For example, "~/Downloads/Dracula.tmTheme". Only available in the user's theme.toml and cannot be used in flavor.toml.
+
+Yazi's builtin code highlighting themes, which are paths to .tmTheme files. You can find them on GitHub using "tmTheme" as a keyword
+
+.SS [status]
+
+.PP
+.IP \(bu 2
+separator_open (String): Opening separator symbol. e.g. "[".
+.IP \(bu 2
+separator_close (String): Closing separator symbol. e.g. "]".
+.IP \(bu 2
+separator_style (Style): Separator style.
+.PP
+
+Mode
+
+.PP
+.IP \(bu 2
+mode_normal (Style): Normal mode style.
+.IP \(bu 2
+mode_select (Style): Select mode style.
+.IP \(bu 2
+mode_unset (Style): Unset mode style.
+.PP
+
+Progress
+
+.PP
+.IP \(bu 2
+progress_label (Style): Progress label style.
+.IP \(bu 2
+progress_normal (Style): Style of the progress bar when it is not in an error state.
+.IP \(bu 2
+progress_error (Style): Style of the progress bar when an error occurs.
+.PP
+
+Permissions
+
+.PP
+.IP \(bu 2
+permissions_t (Style): File type.
+.IP \(bu 2
+permissions_r (Style): Read permission.
+.IP \(bu 2
+permissions_w (Style): Write permission.
+.IP \(bu 2
+permissions_x (Style): Execute permission.
+.IP \(bu 2
+permissions_s (Style): - separator.
+.PP
+
+.SS [select]
+
+.PP
+.IP \(bu 2
+border (Style): Border style.
+.IP \(bu 2
+active (Style): Selected item style.
+.IP \(bu 2
+inactive (Style): Unselected item style.
+.PP
+
+.SS [input]
+
+.PP
+.IP \(bu 2
+border (Style): Border style.
+.IP \(bu 2
+title (Style): Title style.
+.IP \(bu 2
+value (Style): Value style.
+.IP \(bu 2
+selected (Style): Selected value style.
+.PP
+
+.SS [completion]
+
+.PP
+.IP \(bu 2
+border (Style): Border style.
+.IP \(bu 2
+active (Style): Selected item style.
+.IP \(bu 2
+inactive (Style): Unselected item style.
+.PP
+
+Icons
+
+.PP
+.IP \(bu 2
+icon_file (String): File icon.
+.IP \(bu 2
+icon_folder (String): Folder icon.
+.IP \(bu 2
+icon_command (String): Command icon.
+.PP
+
+.SS [tasks]
+
+.PP
+.IP \(bu 2
+border (Style): Border style.
+.IP \(bu 2
+title (Style): Title style.
+.IP \(bu 2
+hovered (Style): Hovered item style.
+.PP
+
+.SS[which]
+
+.PP
+.IP \(bu 2
+cols (Number): Number of columns. The value can be 1, 2, 3.
+.IP \(bu 2
+mask (Style): Mask style.
+.IP \(bu 2
+cand (Style): Candidate key style.
+.IP \(bu 2
+rest (Style): Rest key style.
+.IP \(bu 2
+desc (Style): Description style.
+.IP \(bu 2
+separator (String): Separator symbol. e.g. " -> ".
+.IP \(bu 2
+separator_style (Style): Separator style.
+.PP
+
+.SS [help]
+
+.PP
+.IP \(bu 2
+on (Style): Key column style.
+.IP \(bu 2
+run (Style): Command column style.
+.IP \(bu 2
+desc (Style): Description column style.
+.IP \(bu 2
+hovered (Style): Hovered item style.
+.IP \(bu 2
+footer (Style): Footer style.
+.PP
+
+.SS [filetype]
+
+Set file list item display styles for specific file types, supporting matching by name and mime-type:
+
+.TS
+box;
+L.
+[filetype]
+rules = [
+  # Images
+  { mime = "image/*", fg = "yellow" },
+
+  # Videos
+  { mime = "video/*", fg = "magenta" },
+  { mime = "audio/*", fg = "magenta" },
+
+  # Empty files
+  { mime = "inode/x-empty", fg = "cyan" },
+
+  # Orphan symbolic links
+  { name = "*", is = "orphan", fg = "red" },
+
+  # ...
+
+  # Fallback
+  # { name = "*", fg = "white" },
+  { name = "*/", fg = "blue" }
+]
+.TE
+
+Each rule supports complete Style properties. There are two special rule:
+
+.PP
+.TS
+L L.
+name = "*"    matches all files.
+name = "*/"   matches all directories.
+.TE
+.PP
+
+You can restrict the specific type of files through is, noting that it must be used with either name or mime. It accepts the following values:
+
+.TS
+L L.
+block     Block device
+char      Char device
+exec      Executable
+fifo      FIFO
+link      Symbolic link
+orphan    Orphan symbolic link
+sock      Socket
+sticky    File with sticky bit set
+.TE
+
+.SS [icon]
+
+Display icon based on the first matched rule.
+
+You can prepend or append rules to the default through 
+.I prepend_rules
+and
+.I append_rules
+See Configuration mixing for details.
+
+.TS
+box;
+L.
+[icon]
+prepend_rules = [
+  { name = "*.rs"    , text = "icon_glyph_here" },
+  { name = "Desktop/", text = "icon_glyph_here" },
+  # ...
+
+  # Icon with a color
+  { name = "*.lua", text = "icon_glyph_here", fg = "#51a0cf" },
+
+  # You can also use `is` rule, just like `[filetype]` section
+  # Orphan symbolic links
+  { name = "*", is = "orphan", text = "icon_glyph_here" },
+]
+
+append_rules = [
+  # My fallback icons
+  { name = "*" , text = "icon_glyph_here" },
+  { name = "*/", text = icon_glyph_here" },
+]
+.TE
+
+Or, use rules to rewrite the entire default rules:
+
+.TS
+box;
+L.
+[icon]
+rules = [
+  # ...Some rules
+]
+.TE
+
+End with / for directories, wildcard rule (* or */) can be used for fallback matching all files or directories.
+
+If your 
+.I append_rules 
+contains wildcard rules, they will always take precedence over the default wildcard rules as the fallback.
+
 .SH "SEE ALSO"
 .BR yazi-preview (2),
 .BR yazi-config (5),
