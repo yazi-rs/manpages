@@ -1,0 +1,714 @@
+.TH YAZI-CONFIG 1
+.SH NAME
+yazi-config
+.SH DESCRIPTION
+.B
+Configuration options for yazi terminal file manager.
+There are three configuration files for Yazi:
+.IP \(bu 2
+.I "yazi.toml"
+: General Configuration.
+.IP \(bu 2
+.I "keymap.toml"
+: Keybindings Configuration.
+.IP \(bu 2
+.I "theme.toml"
+: Color scheme Configuration.
+.PP
+You can find the default configuration files on the latest tag 
+.I https://github.com/sxyazi/yazi/tree/latest/yazi-config/preset.
+.PP
+.PP
+To override any of the defaults, begin by creating the corresponding file at:
+.IP \(bu 2
+.I "~/.config/yazi/"
+on Unix-like systems.
+.IP \(bu 2
+.I "C:\[rs]Users\[rs]USERNAME\[rs]AppData\[rs]Roaming\[rs]yazi\[rs]config\[rs]"
+on Windows.
+.PP
+.SH CONFIGURATION MIXING
+.PP
+The options from your configuration file will be used to override the default. However, for key bindings, if you don't want to override the default directly: 
+.P
+.TS
+box;
+L.
+# keymap.toml
+_
+[manager]
+keymap = [
+  # ...
+]
+.TE
+.P
+and instead want to customize your keys upon the default, you can use prepend_* or append_* directories to prepend or append them to the default.
+.PP
+.P
+.TS
+box;
+L.
+# keymap.toml
+_
+[manager]
+prepend_keymap = [
+  # ...
+]
+append_keymap = [
+  # ...
+]
+.TE
+.P
+.PP
+They are also available for open, icon, previewer, and preloader rules.
+.PP
+.SH CUSTOM CONFIG DIRECTORY
+.PP
+You can change the Yazi configuration directory by exporting the YAZI_CONFIG_HOME environment variable. For example:
+.TS
+box;
+L.
+env "YAZI_CONFIG_HOME=~/.config/yazi-alt" yazi
+.TE
+will start Yazi with 
+.I "~/.config/yazi-alt" 
+as the configuration directory, and can have its own 
+.I "yazi.toml"
+, 
+.I "keymap.toml"
+, 
+.I "init.lua"
+, etc. files within it.
+.PP
+.SH "GENERAL CONFIG (yazi.toml)"
+.SS "[manager]"
+.IP \(bu 2
+.I "ratio"
+Manage layout by ratio, 3\-element array.
+.RS
+.PP
+.TS
+L L.
+[1,4,3]   1/8 width for parent, 4/8 width for current, 3/8 width for preview
+.TE
+.PP
+.RE
+.IP \(bu 2
+.I "sort_by"
+File sorting method.
+.RS
+.PP
+.TS
+L L.
+"none"          Don't sort
+"modified"      Sort by last modified time
+"created"       Sort by creation time (Due to a Rust bug, this is not available at the moment)
+"extension"     Sort by file extension
+"alphabetical"  Sort alphabetically, e.g. 1.md < 10.md < 2.md
+"natural"       Sort naturally, e.g. 1.md < 2.md < 10.md
+"size"          Sort by file size
+.TE
+.PP
+.RE
+
+.IP \(bu 2
+.I "sort_sensitive"
+Sort case-sensitively.
+.RS
+.PP
+.TS
+L L.
+"true"          Case-sensitive
+"false"         Sort by last modified time
+.TE
+.PP
+.RE
+
+.IP \(bu 2
+.I "sort_reverse"
+Display files in reverse order.
+.RS
+.PP
+.TS
+L L.
+"true"          Reverse order
+"false"         Normal order
+.TE
+.PP
+.RE
+
+.IP \(bu 2
+.I "sort_dir_first"
+Display directories first.
+.RS
+.PP
+.TS
+L L.
+"true"          Directories first
+"false"         Respects sort_by and sort_reverse only
+.TE
+.PP
+.RE
+
+.IP \(bu 2
+.I "sort_translit"
+Transliterate filenames for sorting (i.e. replaces Â as A, Æ as AE, etc.), only available if sort_by = "natural".
+
+This is useful for files that contain Hungarian characters. (Currently requires nightly builds)
+.RS
+.PP
+.TS
+L L.
+"true"          Enabled
+"false"         Disabled
+.TE
+.PP
+.RE
+
+.IP \(bu 2
+.I "linemode"
+Display information associated with the file on the right side of the file list row.
+.PP
+  "none"          No line mode.
+  "size"          Display the size in bytes of the file. Since file sizes are only 
+                  evaluated when sorting by size, it only works after sort_by = "size" 
+                  set, and this behavior might change in the future.
+  "permissions"   Display the permissions of the file, only available on 
+                  Unix-like systems.
+  "mtime"         Display the last modified time of the file.
+  "owner"         Display the owner of the file, only available on Unix-like systems.
+                  (Nightly version of Yazi required atm)
+.PP
+
+.IP \(bu 2
+.I "show_hidden"
+Show hidden files
+.RS
+.PP
+.TS
+L L.
+"true"          Show
+"false"         Do not show
+.TE
+.PP
+.RE
+
+.IP \(bu 2
+.I "show_symlink"
+Show the path of the symlink file point to, after the filename.
+.RS
+.PP
+.TS
+L L.
+"true"          Show
+"false"         Do not show
+.TE
+.PP
+.RE
+
+.IP \(bu 2
+.I "scrolloff"
+The number of files to keep above and below the cursor when moving through the file list.
+
+If the value is larger than half the screen height (e.g. 200), the cursor will be centered.
+
+.IP \(bu 2
+.I "mouse_events"
+Array of strings, the types of mouse events can be received by the plugin system, available values:
+.RS
+.PP
+.TS
+L L.
+"true"          Show
+"false"         Do not show
+"click"         Mouse click
+"scroll"        Mouse vertical scroll
+"touch"         Mouse horizontal scroll
+"move"          Mouse move
+"drag"          Mouse drag (Some terminals do not support this)
+.TE
+.PP
+.RE
+
+.IP \(bu 2
+.I "mouse_events"
+Array of strings, the types of mouse events can be received by the plugin system, available values:
+.RS
+.PP
+.TS
+L L.
+"true"          Show
+"false"         Do not show
+"click"         Mouse click
+"scroll"        Mouse vertical scroll
+"touch"         Mouse horizontal scroll
+"move"          Mouse move
+"drag"          Mouse drag (Some terminals do not support this)
+.TE
+.PP
+.RE
+
+.SS "[preview]"
+
+.IP \(bu 2
+.I "tab_size"
+Tab width.
+
+.IP \(bu 2
+.I "max_width"
+Maximum preview width for images. Run a `yazi --clear-cache` to take effect after changing this.
+
+This value is also used for preloading images; the larger it is, the larger the image cache generated, which consumes more CPU.
+
+.IP \(bu 2
+.I "max_height"
+Maximum preview height for images. Run a `yazi --clear-cache` to take effect after changing this.
+
+This value is also used for preloading images; the larger it is, the larger the image cache generated, which consumes more CPU.
+
+.IP \(bu 2
+.I "cache_dir"
+The system cache directory is used by default, and the cached files will go away on a reboot automatically.
+
+If you want to make it more persistent, you can specify the cache directory manually as an absolute path.
+
+.IP \(bu 2
+.I "image_filter"
+The filter used on image downscaling, available values:
+.RS
+.PP
+.TS
+L L.
+"nearest"       Nearest Neighbor
+"triangle"      Linear Triangle
+"catmull-rom"   Catmull-Rom
+"lanczos3"      Lanczos with window 3
+.TE
+.PP
+They are arranged in order from fast to slow, and from poor to good quality - Lanczos3 provides the highest quality but is also the slowest.
+.RE
+
+.IP \(bu 2
+.I "image_quality"
+Quality on pre-caching images, range 50-90.
+
+The larger value, the better image quality, but slower with more CPU consumption, and generates larger cache files that occupy more storage space.
+
+.IP \(bu 2
+.I "sixel_fraction"
+Sixel is a very old image format that only supports 256 colors. For better image preview, Yazi trains a neural network for each image to find the most representative colors.
+
+This value determines the number of samples used during the training, range 10-20. A smaller value produces better results but is also slower.
+
+.IP \(bu 2
+.I "ueberzug_scale"
+/
+.I "ueberzug_offset"
+.RS
+.IP \(bu 2
+.I "ueberzug_scale"
+(Float): Ueberzug image scaling ratio, scale>1 for enlargement, scale<1 for reduction. For example, 0.5 indicates a reduction to half.
+.IP \(bu 2
+.I "ueberzug_offset" 
+([x, y, width, height]): Ueberzug image offset, in cell units. For example, [0.5, 0.5, -0.5, -0.5] indicates that the image is offset by half a cell in both directions, and the width and height are reduced by half a cell.
+
+This is useful for solving a bug of Überzug++ image size calculation.
+
+If your monitor has a 2.0 scale factor, and is running on Wayland under Hyprland, you may need to set ueberzug_scale: 0.5, and adjust the value of ueberzug_offset according to your case, to offset this issue.
+.RE
+
+.SS "[opener]"
+.TS
+box;
+L.
+[opener]
+edit = [
+  { run = 'nvim "$@"', block = true },
+]
+play = [
+  { run = 'mpv "$@"', orphan = true, for = "unix" },
+]
+open = [
+  { run = 'xdg-open "$@"', desc = "Open" },
+]
+# ...
+.TE
+Available options are as follows:
+.IP \(bu 2
+.I run
+: The command to open the selected files, with the following variables available:
+.RS
+.IP \(bu 2
+.I $n 
+(Unix) / 
+.I %n
+(Windows): The N-th selected file, starting from 1. e.g. $2 represents the second selected file.
+.IP \(bu 2
+.I $@ 
+(Unix) / 
+.I %* 
+(Windows): All selected files, i.e. $1, $2, ..., $n.
+.IP \(bu 2
+.I $0 
+(Unix) / 
+.I %0 
+(Windows): The hovered file.
+.RE
+.IP \(bu 2
+.I block
+: Open in a blocking manner. After setting this, Yazi will hide into a secondary screen and display the program on the main screen until it exits. During this time, it can receive I/O signals, which is useful for interactive programs.
+.IP \(bu 2
+.I orphan
+: Keep the process running even if Yazi has exited, once specified, the process will be detached from the task scheduling system.
+.IP \(bu 2
+.I desc
+: Description of the opener, display in interactive components, such as "Open with" and help menu.
+.IP \(bu 2
+.I for
+: The opener is only available on this system; if not specified, it's available on all systems. Available values:
+.RS
+.IP \(bu 2
+.I unix
+: Linux and macOS
+.IP \(bu 2
+.I windows
+: Windows
+.IP \(bu 2
+.I linux
+: Linux
+.IP \(bu 2
+.I macos
+: macOS
+.RE
+
+.SS "[open]"
+Set rules for opening specific files. You can prepend or append rules to the default through 
+.I prepend_rules 
+and 
+.I append_rules
+(See Configuration mixing for details):
+.TS
+box;
+L.
+[open]
+prepend_rules = [
+  { name = "*.json", use = "edit" },
+  # Multiple openers for a single rule
+  { name = "*.html", use = [ "open", "edit" ] },
+]
+append_rules = [
+  { name = "*", use = "my-fallback" },
+]
+.TE
+If your 
+.I append_rules 
+contains wildcard rules, they will always take precedence over the default wildcard rules as the fallback (Currently requires nightly builds).
+
+Or, use rules to rewrite the entire default rules:
+.TS
+box;
+L.
+[open]
+rules = [
+  { mime = "text/*", use = "edit" },
+  { mime = "video/*", use = "play" },
+
+  # { mime = "application/json", use = "edit" },
+  { name = "*.json", use = "edit" },
+
+  # Multiple openers for a single rule
+  { name = "*.html", use = [ "open", "edit" ] },
+]
+.TE
+Available rule options are as follows:
+.PP
+.IP \(bu 2
+.I name
+: Glob expression for matching the file name. Case insensitive by default, add \s to the beginning to make it sensitive.
+.IP \(bu 2
+.I mime
+: Glob expression for matching the mime-type. Case insensitive by default, add \s to the beginning to make it sensitive.
+.IP \(bu 2
+.I use
+: Opener name corresponding to the names in the [opener] section.
+.PP
+With that:
+.PP
+.IP \(bu 2
+If you're using the default mime-type preloader, it retrieves the mime-type of a file through `file -bL --mime-type /path/to/file` command.
+.IP \(bu 2
+If
+.I use
+is an array containing multiple openers, all commands in these openers will be merged. open will run the first of these commands; open --interactive will list all of these commands in the "open with" menu.
+.PP
+.SS "[tasks]"
+.PP
+.IP \(bu 2
+.I "micro_workers"
+Maximum number of concurrent micro-tasks.
+.IP \(bu 2
+.I "macro_workers"
+Maximum number of concurrent macro-tasks.
+.IP \(bu 2
+.I "bizarre_retry"
+Maximum number of retries when a bizarre failure occurs.
+.IP \(bu 2
+.I "suppress_preload"
+Exclude the preload tasks created by the system from the task list, do not report their progress, and do not consider them on app exit confirming.
+.IP \(bu 2
+.I "image_alloc"
+Maximum memory allocation limit in bytes for decoding a single image, 0 for unlimited.
+.IP \(bu 2
+.I "image_bound"
+An array of [width, height], maximum image size (in pixels) for decoding a single image, and 0 for unlimited.
+.PP
+.SS "[plugin]"
+previewers (
+.I "prepend_previewers"
+&
+.I "append_previewers"
+)
+
+You can prepend or append new preview rules to the default previewers under [plugin] by 
+.I "prepend_previewers"
+and 
+.I "append_previewers."
+See Configuration mixing for details. Here are the available options for a single rule:
+.IP \(bu 2
+.I name
+(String): Glob expression for matching the file name. Case insensitive by default, add \[rs]s to the beginning to make it sensitive.
+.IP \(bu 2
+.I mime 
+(String): Glob expression for matching the mime-type. Case insensitive by default, add \[rs]s to the beginning to make it sensitive.
+.IP \(bu 2
+.I run 
+(String): The name of the Lua plugin to be ran.
+.IP \(bu 2
+.I sync 
+(Boolean): Whether to run in the sync context, default is false.
+.TS
+box;
+L.
+[plugin]
+prepend_previewers = [
+  # HEIC previewer
+  { mime = "image/heic", run = "heic" },
+]
+
+append_previewers = [
+  # My fallback previewer
+  { name = "*" , run = "binary" },
+]
+.TE
+If your 
+.I "append_previewers" 
+contains wildcard name rules ("*" or "*/"), they will always take precedence over the default wildcard rules as the fallback.
+
+Yazi comes with the these previewer plugins:
+.RS
+.IP \(bu 2 
+folder: bridge between the Yazi file system and the preview
+.IP \(bu 2 
+code: bridge between built-in code highlighting and the preview, providing async concurrent rendering
+.IP \(bu 2 
+json: bridge between `jq` and the preview, providing async concurrent rendering
+.IP \(bu 2 
+noop: no operation
+.IP \(bu 2 
+image: presentation layer of built-in image preview, offering mixed preview capabilities
+.IP \(bu 2 
+video: bridge between `ffmpegthumbnailer` and the preview, offering mixed preview capabilities
+.IP \(bu 2 
+pdf: bridge between `pdftoppm` and the preview, offering mixed preview capabilities
+.IP \(bu 2 
+archive: bridge between `unar` and the preview, offering mixed preview and concurrent rendering capabilities
+.RE
+
+If you want to create your own previewer, see Previewer API (
+.I "https://yazi-rs.github.io/docs/plugins/overview#previewer"
+).
+
+preloaders (
+.I "prepend_preloaders" 
+&
+.I "append_preloaders"
+)
+
+You can prepend or append new preview rules to the default preloaders under [plugin] by 
+.I "prepend_preloaders" 
+and 
+.I "append_preloaders"
+See Configuration mixing for details. Here are the available options for a single rule:
+.IP \(bu 2
+.I name
+(String): Glob expression for matching the file name. Case insensitive by default, add \[rs]s to the beginning to make it sensitive.
+.IP \(bu 2
+.I mime
+(String): Glob expression for matching the mime-type. Case insensitive by default, add \[rs]s to the beginning to make it sensitive.
+.IP \(bu 2
+.I cond
+(String): Conditional expression – Only rules that meet this condition and satisfy either the name or mime will be applied. For example, A & B means A and B, and A | !B means A or not B. Here are the available factors:
+.IP \(bu 2
+.I mime
+: This file has a mime-type.
+.IP \(bu 2
+.I run
+(String): The name of the Lua plugin to be ran.
+.IP \(bu 2
+.I multi
+(Boolean): Whether to preload multiple files at once.
+.IP \(bu 2
+.I prio
+(String): Preload priority, low, normal or high. The default is normal if not specified.
+
+.TS
+box;
+L.
+[plugin]
+prepend_preloaders = [
+  # HEIC preloader
+  { mime = "image/heic", run = "heic" },
+]
+.TE
+
+Yazi comes with the these preloader plugins:
+
+.RS
+.IP \(bu 2
+mime: preloads mime-type of files in chunks
+.IP \(bu 2
+noop: no operation
+.IP \(bu 2
+image: preloads and caches images
+.IP \(bu 2
+video: preloads and caches videos
+.IP \(bu 2
+pdf: preloads and caches PDFs.
+.RE
+
+If you want to create your own preloader, see Preloader API (
+.I "https://yazi-rs.github.io/docs/plugins/overview#preloader"
+).
+
+.SS "[input]"
+
+You can customize the title and position of each input. As for position, it consists of two parts: Origin and Offset.
+
+The origin is the top-left corner of the input, and the offset is the increment from this origin. Together, they determine the area of the input on the screen.
+
+Origin
+
+.PP
+For the origin, the following values are available:
+.IP \(bu 2
+top-left
+.IP \(bu 2
+top-center
+.IP \(bu 2
+top-right
+.IP \(bu 2
+bottom-left
+.IP \(bu 2
+bottom-center
+.IP \(bu 2
+bottom-right
+.IP \(bu 2
+center
+.IP \(bu 2
+hovered (the cursor position of hovered file)
+.PP
+
+Offset
+
+As for the offset, it's a 4-element tuple: (x, y, width, height).
+
+Placeholder
+
+Some inputs have special placeholders that will be replaced with actual content on display:
+.IP \(bu 2
+trash_title: String
+.RS
+.IP \(bu 2
+{n}: Number of files to be trashed
+.IP \(bu 2
+{s}: "s" if n > 1, otherwise ""
+.RE
+.IP \(bu 2
+delete_title: String
+.RS
+.IP \(bu 2
+{n}: Number of files to be deleted
+.IP \(bu 2
+{s}: "s" if n > 1, otherwise ""
+.RE
+.IP \(bu 2
+find_title: [String, String]
+
+It's a tuple of 2-element: first for "Find next", second for "Find previous".
+.IP \(bu 2
+search_title: String
+.RS
+.IP \(bu 2
+{n}: Name of the current search engine
+.RE
+.IP \(bu 2
+shell_title: [String, String]
+
+It's a tuple of 2-element: first for "Non-blocking shell", second for "Blocking shell".
+
+.IP \(bu 2
+quit_title: String
+.RS
+.IP \(bu 2
+{n}: Number of tasks are running
+.IP \(bu 2
+{s}: "s" if n > 1, otherwise ""
+.RE
+
+.SS "[select]"
+Same as the [input] section.
+
+.SS "[which]"
+.IP \(bu 2
+.I "sort_by"
+Candidate sorting method.
+.RS
+.PP
+.TS
+L L.
+"none"    Don't sort
+"key"     Sort by key
+"desc"    Sort by description
+.TE
+.PP
+.RE
+.IP \(bu 2
+.I "sort_sensitive"
+Sort case-sensitively.
+.RS
+.PP
+.TS
+L L.
+"true"          Case-sensitive
+"false"         Sort by last modified time
+.TE
+.PP
+.RE
+
+.IP \(bu 2
+.I "sort_reverse"
+Display files in reverse order.
+.RS
+.PP
+.TS
+L L.
+"true"          Reverse order
+"false"         Normal order
+.TE
+.PP
+.RE
+.SH "SEE ALSO"
+.BR yazi-preview (2),
+.BR yazi-config (5),
+.BR yazi-plugins (7)
+
